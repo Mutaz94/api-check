@@ -1,7 +1,9 @@
 library(shiny)
 library(httr2)
+library(logger)
 
 get_news_articles <- function(search_term, num_results = 10) {
+  log_info("👉 Getting articles now using NewsAPI")
   req <- request("https://newsapi.org/v2/everything") |>
     req_url_query(
       q = search_term,
@@ -9,7 +11,7 @@ get_news_articles <- function(search_term, num_results = 10) {
       pageSize = num_results,
       apiKey = Sys.getenv("NEWS_API_KEY")
     )
-
+    log_info("👉 Request is done!")
   resp <- req_perform(req)
   resp_body_json(resp)
 }
